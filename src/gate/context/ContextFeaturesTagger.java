@@ -36,6 +36,8 @@ import java.text.NumberFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
+
 
 import org.apache.log4j.Logger;
 
@@ -124,6 +126,30 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
                             Long potentialScopeStart = triggerAnnotation.getStartNode().getOffset();
                             Long potentialScopeEnd = sentenceEndNode.getOffset();
                             AnnotationSet terminationTerms = sentenceContentAnnotations.get(potentialScopeStart, potentialScopeEnd).get("Termination-Term");
+                            
+                            //Xingyi Modifications:
+                            List<Annotation> listAnnos = new ArrayList<Annotation>();
+
+                            for (Annotation triggerTMP : triggerAnnotations) {
+                            	 for (Annotation terminationTMP : terminationTerms) {
+                            		 if(terminationTMP.overlaps(triggerTMP)){
+                            			 listAnnos.add(terminationTMP);
+                            			 System.out.println(terminationTMP);
+                            		 }
+                            	 }
+                            }
+                            for (Annotation toremove:listAnnos){
+                            	inputAnnotationSet.remove(toremove);
+                            	
+                            }
+                            
+                            terminationTerms = inputAnnotationSet.get(sentenceStartNode.getOffset(), sentenceEndNode.getOffset()).get(potentialScopeStart, potentialScopeEnd).get("Termination-Term");
+                            
+                            
+                            //Modification End
+                            
+                            
+                            
                             if (terminationTerms == null || terminationTerms.isEmpty()) {
                                 // default scope expanded until end of the current sentence. Assign Context feature to all Indexed Terms within scope detected and break sentence processing
                                 AnnotationSet scopeConcepts = textConceptAnnotations.get(potentialScopeStart, potentialScopeEnd);
