@@ -2,10 +2,10 @@
   <urlList class="gate.util.persistence.CollectionPersistence">
     <localList>
       <gate.util.persistence.PersistenceManager-URLHolder>
-        <urlString>$relpath$../ANNIE/</urlString>
+        <urlString>$gatehome$plugins/ANNIE</urlString>
       </gate.util.persistence.PersistenceManager-URLHolder>
       <gate.util.persistence.PersistenceManager-URLHolder>
-        <urlString>$relpath$../Tagger_ConText/</urlString>
+        <urlString>$relpath$..</urlString>
       </gate.util.persistence.PersistenceManager-URLHolder>
     </localList>
     <collectionType>java.util.ArrayList</collectionType>
@@ -94,13 +94,13 @@
                 <entry>
                   <string>tokeniserRulesURL</string>
                   <gate.util.persistence.PersistenceManager-URLHolder>
-                    <urlString>$relpath$../ANNIE/resources/tokeniser/DefaultTokeniser.rules</urlString>
+                    <urlString>$gatehome$plugins/ANNIE/resources/tokeniser/DefaultTokeniser.rules</urlString>
                   </gate.util.persistence.PersistenceManager-URLHolder>
                 </entry>
                 <entry>
                   <string>transducerGrammarURL</string>
                   <gate.util.persistence.PersistenceManager-URLHolder>
-                    <urlString>$relpath$../ANNIE/resources/tokeniser/postprocess.jape</urlString>
+                    <urlString>$gatehome$plugins/ANNIE/resources/tokeniser/postprocess.jape</urlString>
                   </gate.util.persistence.PersistenceManager-URLHolder>
                 </entry>
               </localMap>
@@ -145,19 +145,19 @@
                 <entry>
                   <string>externalSplitListURL</string>
                   <gate.util.persistence.PersistenceManager-URLHolder>
-                    <urlString>$relpath$../ANNIE/resources/regex-splitter/external-split-patterns.txt</urlString>
+                    <urlString>$gatehome$plugins/ANNIE/resources/regex-splitter/external-split-patterns.txt</urlString>
                   </gate.util.persistence.PersistenceManager-URLHolder>
                 </entry>
                 <entry>
                   <string>nonSplitListURL</string>
                   <gate.util.persistence.PersistenceManager-URLHolder>
-                    <urlString>$relpath$../ANNIE/resources/regex-splitter/non-split-patterns.txt</urlString>
+                    <urlString>$gatehome$plugins/ANNIE/resources/regex-splitter/non-split-patterns.txt</urlString>
                   </gate.util.persistence.PersistenceManager-URLHolder>
                 </entry>
                 <entry>
                   <string>internalSplitListURL</string>
                   <gate.util.persistence.PersistenceManager-URLHolder>
-                    <urlString>$relpath$../ANNIE/resources/regex-splitter/internal-split-patterns.txt</urlString>
+                    <urlString>$gatehome$plugins/ANNIE/resources/regex-splitter/internal-split-patterns.txt</urlString>
                   </gate.util.persistence.PersistenceManager-URLHolder>
                 </entry>
               </localMap>
@@ -210,7 +210,7 @@
                 <entry>
                   <string>listsURL</string>
                   <gate.util.persistence.PersistenceManager-URLHolder>
-                    <urlString>$relpath$resources/gazetteers/concepts/concept.def</urlString>
+                    <urlString>$relpath$../resources/gazetteers/concepts/concept.def</urlString>
                   </gate.util.persistence.PersistenceManager-URLHolder>
                 </entry>
                 <entry>
@@ -304,7 +304,7 @@
         <entry>
           <string>gate.app.MetadataURL</string>
           <gate.util.persistence.PersistenceManager-URLHolder>
-            <urlString>$relpath$../ANNIE/.annie-defaults-metadata/metadata.xml</urlString>
+            <urlString>$gatehome$plugins/ANNIE/.annie-defaults-metadata/metadata.xml</urlString>
           </gate.util.persistence.PersistenceManager-URLHolder>
         </entry>
       </localMap>

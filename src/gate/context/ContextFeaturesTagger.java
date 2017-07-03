@@ -42,9 +42,12 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 /**
- * A GATE PR which annotates sentences with Contextual Features
+ * A GATE PR based on the ConText algorithm (see Harkema etal, 2009)
  */
-@CreoleResource(name = "Context implementation", comment = "Test description", helpURL = "http://gate.ac.uk/")
+@CreoleResource(
+  name = "Context implementation", 
+  comment = "Determine Negation, Experiencer, and Temporal Status from Clinical Reports", 
+  helpURL = "https://github.com/GateNLP/gateplugin-ConText/wiki")
 public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
 
     private transient Logger logger = Logger.getLogger(this.getClass().getName());
@@ -67,7 +70,7 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
         ClassLoader loader = ContextFeaturesTagger.class.getClassLoader();
         //TODO: FIX IT
         String resourcesPath = loader.getResource("gate/context/ContextFeaturesTagger.class").getPath();
-        String listsURL = resourcesPath.substring(0, resourcesPath.indexOf("context.jar")) + "resources/gazetteers/triggers/triggers.def";
+        String listsURL = resourcesPath.substring(0, resourcesPath.indexOf("ConText.jar")) + "resources/gazetteers/triggers/triggers.def";
         params.put("listsURL", listsURL);
         params.put("caseSensitive", Boolean.FALSE);
         params.put("gazetteerFeatureSeparator", "");

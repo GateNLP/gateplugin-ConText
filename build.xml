@@ -1,13 +1,18 @@
-<project name="Context" basedir=".">
+<project name="ConText" basedir="." default="jar">
     <property name="build.sysclasspath" value="ignore"/>
 
     <property file="build.properties"/>
+
+    <property environment="env" />
+    <condition property="gate.home" value="${env.GATE_HOME}">
+      <isset property="env.GATE_HOME"/>
+    </condition>
 
     <property name="gate.lib" location="${gate.home}/lib"/>
     <property name="src.dir" location="src"/>
     <property name="test.dir" location="tests"/>
     <property name="classes.dir" location="classes"/>
-    <property name="jar.location" location="context.jar"/>
+    <property name="jar.location" location="ConText.jar"/>
     <property name="doc.dir" location="doc"/>
     <property name="javadoc.dir" location="${doc.dir}/javadoc"/>
 

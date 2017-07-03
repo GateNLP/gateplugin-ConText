@@ -53,7 +53,7 @@ public class ContextFeaturesTaggerTest {
     private void initPersistentGateResources() {
         try {
             Corpus corpus = Factory.newCorpus("New Corpus");
-            corpusController = (CorpusController) PersistenceManager.loadObjectFromFile(new File("application.xgapp"));
+            corpusController = (CorpusController) PersistenceManager.loadObjectFromFile(new File(new File("tests"), "application.xgapp"));
             corpusController.setCorpus(corpus);
         } catch (Exception ex) {
             ex.printStackTrace();
