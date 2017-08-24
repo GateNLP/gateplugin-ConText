@@ -36,6 +36,7 @@ import java.text.NumberFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -70,7 +71,8 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
         ClassLoader loader = ContextFeaturesTagger.class.getClassLoader();
         //TODO: FIX IT
         String resourcesPath = loader.getResource("gate/context/ContextFeaturesTagger.class").getPath();
-        String listsURL = resourcesPath.substring(0, resourcesPath.indexOf("ConText.jar")) + "resources/gazetteers/triggers/triggers.def";
+//        String listsURL = resourcesPath.substring(0, resourcesPath.indexOf("ConText.jar")) + "resources/gazetteers/triggers/triggers.def";
+        URL listsURL = this.getClass().getClassLoader().getResource("resources/gazetteers/triggers/triggers.def");
         params.put("listsURL", listsURL);
         params.put("caseSensitive", Boolean.FALSE);
         params.put("gazetteerFeatureSeparator", "");

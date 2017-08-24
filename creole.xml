@@ -1,8 +1,0 @@
-<CREOLE-DIRECTORY
-  ID="gateplugin-ConText"
-  VERSION="1.0"
-  DESCRIPTION="Determine Negation, Experiencer, and Temporal Status from Clinical Reports"
-  HELPURL="https://github.com/GateNLP/gateplugin-ConText"
->
-  <JAR SCAN="true">ConText.jar</JAR>
-</CREOLE-DIRECTORY>
