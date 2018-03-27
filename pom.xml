@@ -13,6 +13,10 @@
 		<!-- this forces the parent to always be resolved from the repo -->
 		<relativePath></relativePath>
 	</parent>
+	
+	<name>ConText</name>
+	<description>A GATE based re-implementation of the ConText algorithm.</description>
+	<url>https://github.com/GateNLP/gateplugin-ConText/wiki</url>
 
 	<!-- this is the description of this plugin -->
 	<groupId>uk.ac.gate.plugins</groupId>
