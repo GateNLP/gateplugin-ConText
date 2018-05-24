@@ -27,6 +27,7 @@ import gate.creole.ANNIEConstants;
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ExecutionException;
 import gate.creole.ResourceInstantiationException;
+import gate.creole.ResourceReference;
 import gate.creole.metadata.CreoleParameter;
 import gate.creole.metadata.CreoleResource;
 import gate.creole.metadata.Optional;
@@ -61,19 +62,37 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
 
     private String conceptAnnotationName;
 
+    private ResourceReference triggerListsUrl;
+
+    private String encoding;
+
     private LanguageAnalyser triggerResources;
 
+    public ResourceReference getTriggerListsUrl() {
+      return triggerListsUrl;
+    }
+
+    @CreoleParameter(comment = "Gazetteer definition used to look up triggers.", suffixes = ".def",
+        defaultValue = "resources/gazetteers/triggers/triggers.def")
+    public void setTriggerListsUrl(ResourceReference triggerListsUrl) {
+      this.triggerListsUrl = triggerListsUrl;
+    }
+
+    public String getEncoding() {
+      return encoding;
+    }
+
+    @CreoleParameter(comment = "Encoding used to load the triggers gazetteer", defaultValue = "UTF-8")
+    public void setEncoding(String encoding) {
+      this.encoding = encoding;
+    }
 
     public Resource init() throws ResourceInstantiationException {
         FeatureMap hidden = Factory.newFeatureMap();
         Gate.setHiddenAttribute(hidden, true);
         FeatureMap params = Factory.newFeatureMap();
-        ClassLoader loader = ContextFeaturesTagger.class.getClassLoader();
-        //TODO: FIX IT
-        String resourcesPath = loader.getResource("gate/context/ContextFeaturesTagger.class").getPath();
-//        String listsURL = resourcesPath.substring(0, resourcesPath.indexOf("ConText.jar")) + "resources/gazetteers/triggers/triggers.def";
-        URL listsURL = this.getClass().getClassLoader().getResource("resources/gazetteers/triggers/triggers.def");
-        params.put("listsURL", listsURL);
+        params.put("listsURL", triggerListsUrl);
+        params.put("encoding", encoding);
         params.put("caseSensitive", Boolean.FALSE);
         params.put("gazetteerFeatureSeparator", "");
         triggerResources = (LanguageAnalyser) Factory.createResource("gate.creole.gazetteer.DefaultGazetteer", params, hidden);
