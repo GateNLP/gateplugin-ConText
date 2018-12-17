@@ -137,7 +137,6 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
                             	 for (Annotation terminationTMP : terminationTerms) {
                             		 if(terminationTMP.overlaps(triggerTMP)){
                             			 listAnnos.add(terminationTMP);
-                            			 System.out.println(terminationTMP);
                             		 }
                             	 }
                             }
