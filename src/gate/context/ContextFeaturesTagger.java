@@ -83,11 +83,13 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
     public void execute() throws ExecutionException {
         interrupted = false;
         if (document == null) throw new ExecutionException("No Document provided!");
-        AnnotationSet inputAnnotationSet = (inputASName == null || inputASName.length() == 0) ? document.getAnnotations() : document.getAnnotations(inputASName);
+        AnnotationSet inputAnnotationSet = document.getAnnotations(inputASName);
+        AnnotationSet outputAnnotationSet = document.getAnnotations(outputASName);
         AnnotationSet inputAnnotations = inputAnnotationSet.get(getInputAnnotationName());
 
         triggerResources.setDocument(document);
         try {
+            triggerResources.setParameterValue("annotationSetName", outputASName);
             triggerResources.execute();
         } catch (Exception ex) {
             throw new ExecutionException(ex);
@@ -109,7 +111,8 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
                     Node sentenceStartNode = sentenceLikeAnnotation.getStartNode();
                     Node sentenceEndNode = sentenceLikeAnnotation.getEndNode();
                     AnnotationSet sentenceContentAnnotations = inputAnnotationSet.get(sentenceStartNode.getOffset(), sentenceEndNode.getOffset());
-                    List<Annotation> triggerAnnotations = sentenceContentAnnotations.get(Constants.ANNOTATION_NAME_TRIGGER).inDocumentOrder();
+                    AnnotationSet triggerAnnotationsSet = outputAnnotationSet.get(sentenceStartNode.getOffset(), sentenceEndNode.getOffset()).get(Constants.ANNOTATION_NAME_TRIGGER);
+                    List<Annotation> triggerAnnotations = triggerAnnotationsSet.inDocumentOrder();
                     // process trigger annotation
                     if (triggerAnnotations != null && !triggerAnnotations.isEmpty()) {
                         for (Annotation triggerAnnotation : triggerAnnotations) {
@@ -155,7 +158,7 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
                             if (terminationTerms == null || terminationTerms.isEmpty()) {
                                 // default scope expanded until end of the current sentence. Assign Context feature to all Indexed Terms within scope detected and break sentence processing
                                 AnnotationSet scopeConcepts = textConceptAnnotations.get(potentialScopeStart, potentialScopeEnd);
-                                AnnotationSet scopeTriggers = sentenceContentAnnotations.get(potentialScopeStart, potentialScopeEnd).get(Constants.ANNOTATION_NAME_TRIGGER);
+                                AnnotationSet scopeTriggers = triggerAnnotationsSet.get(potentialScopeStart, potentialScopeEnd);
                                 String experiencer = getExperiencer(potentialScopeStart, potentialScopeEnd, scopeTriggers);
                                 String temporality = getTemporality(potentialScopeStart, potentialScopeEnd, scopeTriggers);
                                 String negated = getNegated(potentialScopeStart, potentialScopeEnd, scopeTriggers);
@@ -171,7 +174,8 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
                                 // lets take first termination term and limit scope to it
                                 Annotation terminationTerm = sortedTerminationTriggers.get(0);
                                 potentialScopeEnd = terminationTerm.getStartNode().getOffset();
-                                assignContextFeatures(textConceptAnnotations, sentenceContentAnnotations, potentialScopeStart, potentialScopeEnd);
+                                AnnotationSet scopeTriggers = triggerAnnotationsSet.get(potentialScopeStart, potentialScopeEnd);
+                                assignContextFeatures(textConceptAnnotations, scopeTriggers, potentialScopeStart, potentialScopeEnd);
                             }
                         }
                     } else {
@@ -200,13 +204,13 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
      */
     private Set<Long> cleanupTriggers() {
         Set<Long> boundaries = new HashSet<Long>();
-        List<Annotation> triggerAnnotations = getDocument().getAnnotations().get(Constants.ANNOTATION_NAME_TRIGGER).inDocumentOrder();
+        List<Annotation> triggerAnnotations = getDocument().getAnnotations(outputASName).get(Constants.ANNOTATION_NAME_TRIGGER).inDocumentOrder();
         for (Annotation triggerAnnotation : triggerAnnotations) {
             String minorType = (String) triggerAnnotation.getFeatures().get(ANNIEConstants.LOOKUP_MINOR_TYPE_FEATURE_NAME);
             if (minorType.equalsIgnoreCase(Constants.FEATURE_NAME_PSEUDO_TRIGGER)) {
                 Long startOffset = triggerAnnotation.getStartNode().getOffset();
                 Long endOffset = triggerAnnotation.getEndNode().getOffset();
-                AnnotationSet tokens = getDocument().getAnnotations().get(startOffset, endOffset).get(ANNIEConstants.TOKEN_ANNOTATION_TYPE);
+                AnnotationSet tokens = getDocument().getAnnotations(inputASName).get(startOffset, endOffset).get(ANNIEConstants.TOKEN_ANNOTATION_TYPE);
                 if (tokens != null) {
                     for (Annotation token : tokens) {
                         boundaries.add(token.getStartNode().getOffset());
@@ -241,9 +245,8 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
      * @param potentialScopeStart
      * @param potentialScopeEnd
      */
-    private void assignContextFeatures(AnnotationSet conceptAnnotations, AnnotationSet sentenceContentAnnotations, Long potentialScopeStart, Long potentialScopeEnd) {
+    private void assignContextFeatures(AnnotationSet conceptAnnotations, AnnotationSet scopeTriggers, Long potentialScopeStart, Long potentialScopeEnd) {
         AnnotationSet scopeConcepts = conceptAnnotations.get(potentialScopeStart, potentialScopeEnd);
-        AnnotationSet scopeTriggers = sentenceContentAnnotations.get(potentialScopeStart, potentialScopeEnd).get(Constants.ANNOTATION_NAME_TRIGGER);
         for (Annotation conceptAnnotation : scopeConcepts) {
             String experiencer = getExperiencer(potentialScopeStart, potentialScopeEnd, scopeTriggers);
             String temporality = getTemporality(potentialScopeStart, potentialScopeEnd, scopeTriggers);
