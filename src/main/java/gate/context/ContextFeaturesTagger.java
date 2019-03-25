@@ -199,14 +199,6 @@ public class ContextFeaturesTagger extends AbstractLanguageAnalyser {
                                 assignContextFeatures(textConceptAnnotations, scopeTriggers, potentialScopeStart, potentialScopeEnd);
                             }
                         }
-                    } else {
-                        // default values should be sent back?
-                        for (Annotation conceptAnnotation : textConceptAnnotations) {
-                            conceptAnnotation.getFeatures().put(Constants.NEGATION_VALUE, Constants.DEFAULT_NEGATION_VALUE);
-                            conceptAnnotation.getFeatures().put(Constants.TEMPORALITY_VALUE, Constants.DEFAULT_TEMPORALITY_VALUE);
-                            conceptAnnotation.getFeatures().put(Constants.EXPERIENCER_VALUE, Constants.DEFAULT_EXPERIENCER_VALUE);
-                        }
-
                     }
                 }
             }
